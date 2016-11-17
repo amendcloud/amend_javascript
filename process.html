@@ -6,7 +6,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/loader.css" rel="stylesheet" />
     <script src="Scripts/jquery.min.js"></script>
-    <script src="Scripts/jquery.cloudamend.js"></script>
+    <script src="lib-amend/jquery.cloudamend.min.js"></script>
     <style>
         .radio {
             display: inline-block;
@@ -16,20 +16,7 @@
     <script type="text/javascript">
         var imageUrl = '';
         var imageId = '';
-        function getQueryStrings() {
-            var assoc = {};
-            var decode = function (s) { return decodeURIComponent(s.replace(/\+/g, " ")); };
-            var queryString = location.search.substring(1);
-            var keyValues = queryString.split('&');
-
-            for (var i in keyValues) {
-                var key = keyValues[i].split('=');
-                if (key.length > 1) {
-                    assoc[decode(key[0])] = decode(key[1]);
-                }
-            }
-            return assoc;
-        }
+        
         $(document).ready(function () {
             //Amend.setAmendName("your-amendName");
             var qs = getQueryStrings();
@@ -45,6 +32,22 @@
                 window.location.href = "index.html";
             }
         });
+		
+		function getQueryStrings() {
+            var assoc = {};
+            var decode = function (s) { return decodeURIComponent(s.replace(/\+/g, " ")); };
+            var queryString = location.search.substring(1);
+            var keyValues = queryString.split('&');
+
+            for (var i in keyValues) {
+                var key = keyValues[i].split('=');
+                if (key.length > 1) {
+                    assoc[decode(key[0])] = decode(key[1]);
+                }
+            }
+            return assoc;
+        }
+		
         function getProcessedImage() {
             $('.spinner-container').css('display', 'block');
             var height = $('#txtHeight').val();
