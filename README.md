@@ -78,7 +78,7 @@ Assuming you have your amend configuration parameters defined (`amend_name`, `ac
     
 The following example uploads a local JPG to the cloud: 
  
-	Amend.upload('fileUpload', function (response) {
+	Amend.upload('fileUpload', function (resp) {
 		string url = resp.CDNUrl;
 		string imageName = resp.ImageName;
 	});
@@ -90,7 +90,7 @@ The uploaded image is assigned a randomly generated public Name. The image is im
         
     http://amend.cloud/cloud_name/image/cloud_name112128
 	
-or you can get Image Name return by amend upload api
+you can get Image Name return by amend upload api
 
 	string imageName = resp.ImageName;
 	
