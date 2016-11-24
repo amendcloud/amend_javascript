@@ -33,7 +33,7 @@ amend Javascript library is available as Github project at https://github.com/am
 
 Sign up for a [free account](http://developer.amendcloud.com/Register) so you can try out image transformations and seamless image delivery through CDN.
 
-*Note: Replace `demo` in all the following examples with your Cloudinary's `cloud name`.*  
+*Note: Replace `demo` in all the following examples with your amend's `amend name`.*  
 
 Accessing an uploaded image with the `pc` public ID through a CDN:
 
