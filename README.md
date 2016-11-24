@@ -18,8 +18,6 @@ For projects based on Javascript, amend provides a library for simplifying the i
 
 amend Javascript library is available as Github project at https://github.com/amendcloud/amend_javascript
 
-Please see NuGet Documentation at http://docs.nuget.org/ for instructions of how to work with NuGet packages.
-
 ### Manual setup
 
 1. Download github sample project
