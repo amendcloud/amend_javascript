@@ -6,7 +6,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/loader.css" rel="stylesheet" />
     <script src="Scripts/jquery.min.js"></script>
-    <script src="lib-amend/jquery.cloudamend.min.js"></script>
+    <script src="lib-amend/jquery.cloudamend.js"></script>
     <style>
         .radio {
             display: inline-block;
@@ -18,7 +18,7 @@
         var imageId = '';
         
         $(document).ready(function () {
-            //Amend.setAmendName("your-amendName");
+            //Amend.setAmendName("my-amend-name");
             var qs = getQueryStrings();
             var myParam = qs["ImageId"];
             var myParam1 = qs["ImageUrl"];
@@ -76,28 +76,30 @@
             if (height != '' && width != '') {
                 obj_Transform.height = height;
                 obj_Transform.width = width;
+				console.log("fit"+fit);
                 if (fit != '0') {
                     switch (fit) {
                         case '1':
-                            obj_Transform.scale = Amend.FIT_XY;
+                            obj_Transform.fit = Amend.FIT_XY;
                             break;
                         case '2':
-                            obj_Transform.scale = Amend.FIT_WIDTH;
+                            obj_Transform.fit = Amend.FIT_WIDTH;
                             break;
                         case '3':
-                            obj_Transform.scale = Amend.FIT_HEIGHT;
+                            obj_Transform.fit = Amend.FIT_HEIGHT;
                             break;
                         case '4':
-                            obj_Transform.scale = Amend.FIT_FILL;
+                            obj_Transform.fit = Amend.FIT_FILL;
                             break;
                         case '5':
-                            obj_Transform.scale = Amend.FIT_INSIDE;
+                            obj_Transform.fit = Amend.FIT_INSIDE;
                             break;
                         case '6':
-                            obj_Transform.scale = Amend.FIT_FACE;
+                            obj_Transform.fit = Amend.FIT_FACE;
                             break;
                     }
                 }
+				console.log(obj_Transform);
                 if (align != '0') {
                     switch (align) {
                         case "1":
@@ -137,14 +139,18 @@
             //Set options for effects(e.g. brightness or contrast)
 
             var effect = new Object();
+			var isEffect=false;
             if (brightnss != '') {
                 effect.brightness = brightnss;
+				isEffect=true;
             }
             if (contrst != '') {
                 effect.contrast = contrst;
+				isEffect=true;
             }
-            obj_Op.effect = effect;
-
+			if(isEffect){
+				obj_Op.effect = effect;
+			}
             //Set options for image overlay
             if (overlay_img != '') {
                 var obj_Overlay = new Object();
@@ -224,10 +230,10 @@
                 obj_Op.rotate = angle;
             }
 
-            //Set options for grayscale
+            //Set options for grayfit
 
             if ($('#chkGrayScale').is(':checked')) {
-                obj_Op.grayscale = 'grayscale';
+                obj_Op.grayfit = 'grayfit';
             }
             if (imageId != '') {
                 Amend.load(imageId, obj_Op).into("#Image1");

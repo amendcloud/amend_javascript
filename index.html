@@ -44,8 +44,9 @@
             });
             $('#btnUpload').click(function () {
                 $('.spinner-container').css('display', 'block');
-                //Amend.setAmendName("your-amendName");
-                //Amend.setCredentials("your-accesskey", "your-accesssecret");
+                //Amend.setAmendName("my-amend-name");
+                //Amend.setCredentials("my-access-key", "my-access-secret");
+				
                 Amend.upload('fileUpload', function (response) {
                     console.log(response);
                     if (response.StatusCode == 200) {
