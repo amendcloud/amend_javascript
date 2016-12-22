@@ -19,19 +19,20 @@ var Amend = {
 
     X: "x",
     Y: "y",
-    XY: "XY",
+    XY: "xy",
 
     MAX: "max",
 
-    imgId: null,
+    imgName: null,
     imgUrl: null,
     options: "",
     AMEND_NAME: null,
     ACCESS_KEY: null,
     ACCESS_SECRET: null,
     load: function (ImageId, options) {
+		console.log(options);
         this.options = "";
-        this.imgId = ImageId;
+        this.imgName = ImageId;
         if (options != null) {
             for (var prop in options) {
                 if (this.options != '') { this.options += "/" };
@@ -113,13 +114,12 @@ var Amend = {
 			console.error("amend name required")
 			return;
 		}
-        if (Amend.imgId != null && Amend.imgId != '') {
+        if (Amend.imgName != null && Amend.imgName != '') {
             var url = "http://amend.cloud/" + Amend.AMEND_NAME + "/image";
             if (this.options != "") {
                 url += "/" + this.options;
             }
-            url += "/" + this.imgId;
-            //url += this.imgId;
+            url += "/" + this.imgName;
             $(imgName).attr('src', url);
         } else {
             var url = "http://amend.cloud/" + Amend.AMEND_NAME + "/fetch/"
@@ -152,7 +152,7 @@ var Amend = {
             var data = new Object();
             data.ImageBase64 = img;
             if (name != "") {
-                data.ImageId = name;
+                data.ImageName = name;
             }
 
             $.ajax({
@@ -177,6 +177,87 @@ var Amend = {
             callback({ "StatusCode": 404, "Message": "No file found" });
         }
     },
+	
+	rename: function (image_name, new_name, callback) {
+		if(Amend.AMEND_NAME==null){
+			console.error("Amend name required");
+			callback({"StatusCode":400,"Message":"Amend name required"});
+			return;
+		}
+		if(Amend.ACCESS_KEY==null){
+			console.error("Amend credentials required")
+			callback({"StatusCode":400,"Message":"Amend credentials required"});
+			return;
+		}
+		
+		if(image_name==null || image_name==""){
+			console.error("image_name required")
+			callback({"StatusCode":400,"Message":"image_name required"});
+			return;
+		}
+		
+		if(new_name==null || new_name==""){
+			console.error("new_image_name required")
+			callback({"StatusCode":400,"Message":"new_name required"});
+			return;
+		}
+        
+		var data = new Object();
+		data.ImageName = image_name;
+		data.NewName = new_name;
+
+		$.ajax({
+			"url": "http://amend.cloud/" + Amend.AMEND_NAME + "/rename/",
+			"type": "POST",
+			"data": (data),
+			"beforeSend": function (request) {
+				request.setRequestHeader("AccessKey", Amend.ACCESS_KEY);
+				request.setRequestHeader("AccessSecret", Amend.ACCESS_SECRET);
+			},
+			"content-type": "application/json",
+			"complete": function (resp) {
+				callback(JSON.parse(resp.responseText));
+			}
+		});
+    },
+	
+	destroy: function (image_name, callback) {
+		if(Amend.AMEND_NAME==null){
+			console.error("Amend name required");
+			callback({"StatusCode":400,"Message":"Amend name required"});
+			return;
+		}
+		if(Amend.ACCESS_KEY==null){
+			console.error("Amend credentials required")
+			callback({"StatusCode":400,"Message":"Amend credentials required"});
+			return;
+		}
+		
+		if(image_name==null || image_name==""){
+			console.error("image_name required")
+			callback({"StatusCode":400,"Message":"image_name required"});
+			return;
+		}
+		
+		var data = new Object();
+		data.ImageName = image_name;
+		
+		$.ajax({
+			"url": "http://amend.cloud/" + Amend.AMEND_NAME + "/destroy/",
+			"type": "POST",
+			"data": (data),
+			"beforeSend": function (request) {
+				request.setRequestHeader("AccessKey", Amend.ACCESS_KEY);
+				request.setRequestHeader("AccessSecret", Amend.ACCESS_SECRET);
+			},
+			"content-type": "application/json",
+			"complete": function (resp) {
+				callback(JSON.parse(resp.responseText));
+			}
+		});
+    },
+	
+	
     setCredentials: function (access_key, access_secret) {
         Amend.ACCESS_KEY = access_key;
         Amend.ACCESS_SECRET = access_secret;
@@ -245,7 +326,7 @@ function getTransform(transform) {
             case 'height':
                 options += 'h_' + transform[prop];
                 break;
-            case 'scale':
+            case 'fit':
                 options += transform[prop];
                 break;
             case 'align':
